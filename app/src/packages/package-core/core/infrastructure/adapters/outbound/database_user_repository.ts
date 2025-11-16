@@ -5,7 +5,7 @@ import { User } from '../../../domain/entities/user';
 import { UserRepository } from '../../../domain/repositories/user_repository';
 
 export class DatabaseUserRepository implements UserRepository {
-  constructor(private prisma: PrismaClient) {}
+  constructor(private prisma: PrismaClient) { }
 
   async findById(id: string): Promise<User | null> {
     const user = await this.prisma.user.findUnique({ where: { id } });
@@ -32,13 +32,14 @@ export class DatabaseUserRepository implements UserRepository {
   }
 
   async delete(id: string): Promise<boolean> {
-      const deleted = await this.prisma.useer.delete(id);
-      return deleted
+    const deleted = await this.prisma.user.delete({ where: { id } });
+    if (!deleted) throw new Error("Error on delete user")
+    return true;
   }
 
   async update(id: string, user: Partial<User>): Promise<User> {
     // TODO
-      return {} as User
+    return {} as User
   }
 
   // TODO: Implement other methods...

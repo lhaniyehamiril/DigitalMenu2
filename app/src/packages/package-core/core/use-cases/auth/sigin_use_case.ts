@@ -4,13 +4,26 @@ import { compare } from "bcryptjs";
 import jwt from "jsonwebtoken";
 
 export class LoginUseCase {
-  constructor(private userRepository: UserRepository) {}
+  constructor(
+    private userRepository: UserRepository,
+    private jwtSecret: string,
+  ) { }
 
-  async execute(email: string, password: string): Promise<{ user: User; token: string }> {
+  async execute(email: string, password: string): Promise<{ user: User; token: string } | { message: string; status: number }> {
     const user = await this.userRepository.findByEmail(email);
 
-    if (!user || !(await compare(password, user.password))) {
-      throw new Error("Invalid credentials");
+    if (!user) {
+      return {
+        message: "user not found",
+        status: 404,
+      }
+    }
+    const passwordIsValid = await compare(password, user.password);
+    if (!passwordIsValid) {
+      return {
+        message: "Invalid password",
+        status: 400,
+      }
     }
 
     const token = this.generateToken(user.id!);
@@ -21,6 +34,6 @@ export class LoginUseCase {
   }
 
   private generateToken(userId: string): string {
-    return jwt.sign({ userId }, process.env.JWT_SECRET!, { expiresIn: "7d" });
+    return jwt.sign({ userId }, this.jwtSecret, { expiresIn: "7d" });
   }
 }
