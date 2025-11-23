@@ -1,9 +1,10 @@
 'use client'
 
-import User from "@/icons/User";
 import Link from "next/link";
 import { usePathname } from "next/navigation"
 import tw from "tailwind-styled-components"
+
+import { UserIcon } from "@/utils/icons";
 
 
 const NavLinkStyle = tw(Link)<{$isactive : boolean}>`
@@ -15,13 +16,13 @@ const NavLinkStyle = tw(Link)<{$isactive : boolean}>`
   }
 `;
 
-const LinkAuthForm = () => {
+const AuthTabs = () => {
     const path = usePathname()
 
     return (
         <div className="flex relative ml-12 p-4">
             <div className="absolute -top-3.5 right-13">
-                <User size="42" />
+                <UserIcon size="42" />
             </div>
            
            <NavLinkStyle 
@@ -42,4 +43,4 @@ const LinkAuthForm = () => {
     )
 }
 
-export default LinkAuthForm
+export default AuthTabs

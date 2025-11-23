@@ -1,9 +1,5 @@
-import AuthForm from '../components/AuthForm'
+import AuthCredentialsForm from '@/features/auth/AuthCredentialsForm'
 
-const LoginPage = () => {
-  return (
-   <AuthForm />
-  )
-}
+const LoginPage = () =>  <AuthCredentialsForm mode='login' />
 
 export default LoginPage
