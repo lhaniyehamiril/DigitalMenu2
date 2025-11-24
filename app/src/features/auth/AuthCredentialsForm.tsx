@@ -1,59 +1,88 @@
 'use client'
 import React, { useState } from 'react'
 import { Flex } from '@radix-ui/themes'
-import tw from "tailwind-styled-components"
+import { useForm } from 'react-hook-form'
+import { useRouter } from 'next/navigation'
 
-import { authFormProps, FormData } from './types'
-import { EmailIcon, PasswordIcon, UserIcon } from '@/utils/icons'
 import AuthTabs from './AuthTabs'
+import useSignUpMutation from './hooks/useSignUpMutation'
+import useLoginMutation from './hooks/useLoginMutation'
 
-import { StyleButton, StyleInput } from '@/components'
-
-
-const Span = tw.span`
-  absolute top-3 right-2 
-`
-const Div = tw.div`
-   w-full relative
-`
+import { FormData } from './types'
+import { StyleButton } from '@/components'
+import { Div, P, Span } from './style'
+import StyleInput from './StyleInput'
+import { EmailIcon, PasswordIcon, UserIcon } from '@/utils/icons'
 
 
-const AuthCredentialsForm = ({mode} : authFormProps) => {
 
- const [formData, setFormData] = useState<FormData>({
-  username: '',
-  email: '',
-  password: ''
- })
 
-// Determine which page mode is active
- const isLoginPage = mode === 'login'
- const isSignUpPage = mode === 'signup'
+const AuthCredentialsForm = () => {
+ const [tab, setTab] = useState<'login' | 'signup'>('login')
+ const {register,handleSubmit,formState: {errors}, reset} = useForm<FormData>()
 
-const handleChange = ( e: React.ChangeEvent<HTMLInputElement>) => {
- const {name , value} = e.target;
- setFormData((prv) => ({...prv , [name]: value}))
-}
+  const router = useRouter()
+
+
+ // check which tab is active
+ const isLogin = tab === 'login'
+
+// Hooks for initiating authentication API calls (login and signup) and handling errors.
+ const {loginMutation, loginError} =  useLoginMutation() 
+ const {signUpMutation , signupError} = useSignUpMutation()
  
-const handleSubmit = (e: React.FormEvent) => {
-  e.preventDefault()
- console.log('form submit', formData)
- setFormData({
-  username: '',
-  email: '',
-  password: ''
- })
+
+// login
+const handleLogin = (data: FormData) => {
+    loginMutation(
+        { email: data.email, password: data.password },
+        {
+            onSuccess: () => {
+                reset()
+                // router.push('/')
+            }
+        }
+    )
 }
+
+// signup
+const handleSignup = (data: FormData) => {
+    signUpMutation(
+        { name: data.name, email: data.email, password: data.password },
+        {
+            onSuccess: () => {
+                reset()
+                router.push('/')
+            }
+        }
+    )
+}
+
+
+// handle submit
+ const onSubmit = (data: FormData) => {
+    if (isLogin) {
+        handleLogin(data)
+    } else {
+        handleSignup(data)
+    }
+}
+
 
   return (
     <Flex justify='center' align='center' direction="column" className='h-[86vh]'>
 
-      <AuthTabs />
+      <AuthTabs tab={tab} setTab={setTab} />
         
-      <form onSubmit={handleSubmit}
+      <form onSubmit={handleSubmit(onSubmit)}
         style={{borderRadius: '61px 35px 67px 200px'}}
         className='bg-[#eee] mt-4 relative shadow  px-9 py-10 max-[387px]:w-[87%] w-80'
-         >
+         > 
+         
+         {isLogin && loginError && <P>{loginError.message}</P>}
+
+         {!isLogin && signupError && <P>{(signupError.message.includes('exists') ? 'این کاربر وجود دارد': signupError.message)}</P>}
+         
         <Flex 
           justify='center'
           align='center'
@@ -61,11 +90,12 @@ const handleSubmit = (e: React.FormEvent) => {
           gap='5'
          className='translate-x-3 -translate-y-2'
          >
-            {isSignUpPage && 
+            {!isLogin && 
             <Div>
-             <StyleInput name='username' type='text' placeholder='نام'
-              value={formData.username}
-              onChange={handleChange} />
+             <StyleInput type='text' placeholder='نام' 
+               register={register('name', {required: "نام"})}
+               error={errors.name?.message}
+             />
 
              <Span>
               <UserIcon size='22'/>
@@ -75,9 +105,10 @@ const handleSubmit = (e: React.FormEvent) => {
            
 
           <Div> 
-            <StyleInput name='email' type='email' placeholder='ایمیل'
-             value={formData.email} 
-             onChange={handleChange}/> 
+            <StyleInput type='email' placeholder='ایمیل' 
+             register={register('email', {required: "ایمیل"})}
+             error={errors.email?.message}
+            /> 
 
              <Span>
                <EmailIcon />
@@ -86,10 +117,10 @@ const handleSubmit = (e: React.FormEvent) => {
             
            
           <Div>
-            <StyleInput name='password' type='password' placeholder='رمز' 
-            value={formData.password} 
-            onChange={handleChange}/>
-            
+            <StyleInput type='password' placeholder='رمز' 
+              register={register('password', {required: "رمز"})}
+              error={errors.password?.message}
+              /> 
            <Span>
             <PasswordIcon />
           </Span>
@@ -97,13 +128,13 @@ const handleSubmit = (e: React.FormEvent) => {
           
         </Flex>
 
-         {isLoginPage && 
+         {isLogin && 
          <div className='bg-white rounded-full mt-2 hover:bg-red-100 cursor-pointer -mr-4 shadow-white shadow-lg w-30 text-center'>
             <span className='text-[12px] text-red-400'>رمزو فراموش کردید</span>
           </div>
           }
           
-        <StyleButton className='mt-5 mr-1 duration-200 hover:w-[71%] w-[70%]'> {isLoginPage ? 'ورود' : 'ثبت نام'} </StyleButton>
+        <StyleButton className='mt-5 mr-1 bg-[var(--main-black-color)] duration-200 hover:w-[71%] w-[70%]'> {isLogin ? 'ورود' : 'ثبت نام'} </StyleButton>
 
       </form>
     </Flex>

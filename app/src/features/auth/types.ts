@@ -1,10 +1,12 @@
 export interface FormData {
-  username: string,
+  name: string,
   email: string,
   password: string
 }
 
 
-export type authFormProps = {
-    mode: 'signup' | 'login'
+export type AuthTabsProps = {
+    tab: string,
+    setTab: React.Dispatch<React.SetStateAction<'login' | 'signup'>>
 }
+

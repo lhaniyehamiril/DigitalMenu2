@@ -1,5 +1,5 @@
-import { setCookie } from "@/lib/prisma/auth/cookies";
-import { prisma } from "@/lib/prisma/prisma";
+import { setCookie } from "@/packages/lib/prisma/auth/cookies";
+import {prisma} from "@/packages/lib/prisma/prisma";
 import { DatabaseUserRepository } from "@/packages/package-core/core/infrastructure/adapters/outbound/database_user_repository";
 import { SignupUseCase } from "@/packages/package-core/core/use-cases/auth/signup_use_case";
 import { NextRequest, NextResponse } from "next/server";

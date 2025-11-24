@@ -4,3 +4,7 @@
 @theme inline {
   --font-iransanse: var(--font-iransanse);
 }
+
+@theme {
+  --main-black-color: #444
+}

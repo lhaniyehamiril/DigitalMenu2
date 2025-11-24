@@ -1,44 +1,45 @@
 'use client'
-
-import Link from "next/link";
-import { usePathname } from "next/navigation"
 import tw from "tailwind-styled-components"
 
 import { UserIcon } from "@/utils/icons";
+import { AuthTabsProps } from "./types";
 
 
-const NavLinkStyle = tw(Link)<{$isactive : boolean}>`
-  py-2 px-10 rounded-[1.1rem] text-center 
+
+const StyleButton = tw.button<{$isactive : boolean}> `
+  py-2 w-28 rounded-[1.1rem] text-center  
   
   ${(p) => p.$isactive 
-    ? 'bg-[#444]  text-white  font-semibold'
+    ? 'bg-[var(--main-black-color)] text-white font-semibold'
     : 'bg-[#eee] ' 
   }
 `;
 
-const AuthTabs = () => {
-    const path = usePathname()
 
+
+const AuthTabs = ({tab, setTab}: AuthTabsProps) => {
+    
     return (
         <div className="flex relative ml-12 p-4">
             <div className="absolute -top-3.5 right-13">
                 <UserIcon size="42" />
             </div>
            
-           <NavLinkStyle 
-               className="-translate-x-7"
-               href='/login' 
-               $isactive={path === '/login'}
+           <StyleButton 
+               className="-translate-x-5 "
+               onClick={() => setTab('login')}
+               $isactive={tab === 'login'}
+               
            >
                ورود
-           </NavLinkStyle> 
+           </StyleButton> 
            
-           <NavLinkStyle 
-               href='/signup' 
-               $isactive={path === '/signup'}
+           <StyleButton
+                onClick={() => setTab('signup')}
+               $isactive={tab === 'signup'}
            >
                ثبت نام
-           </NavLinkStyle>   
+           </StyleButton>   
         </div>
     )
 }
