@@ -6,7 +6,7 @@ import type { Metadata } from "next";
 
 
 const iransans = localFont({
-  src:'../../public/fonts/iransans.ttf' ,
+  src:'./fonts/iransans.ttf' ,
   variable: '--font-iransans'
 })
 

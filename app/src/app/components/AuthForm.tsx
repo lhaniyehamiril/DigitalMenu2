@@ -1,14 +1,25 @@
 'use client'
-import React, { useState } from 'react'
 import { Flex } from '@radix-ui/themes'
 import tw from "tailwind-styled-components"
 
-import { authFormProps, FormData } from './types'
-import { EmailIcon, PasswordIcon, UserIcon } from '@/utils/icons'
-import AuthTabs from './AuthTabs'
+import Input from '@/components/Input'
+import Button from '@/components/Button'
+import LinkAuthForm from './LinkAuthForm'
 
-import { StyleButton, StyleInput } from '@/components'
+import User from '@/icons/User'
+import Email from '@/icons/Email'
+import Password from '@/icons/Password'
+import React, { useState } from 'react'
 
+interface FormData {
+  username: string,
+  email: string,
+  password: string
+}
+
+type authFormProps = {
+    mode?: 'signup'
+}
 
 const Span = tw.span`
   absolute top-3 right-2 
@@ -18,7 +29,8 @@ const Div = tw.div`
 `
 
 
-const AuthCredentialsForm = ({mode} : authFormProps) => {
+const AuthForm = ({mode} : authFormProps) => {
+ const isSignUpPage = mode === 'signup'
 
  const [formData, setFormData] = useState<FormData>({
   username: '',
@@ -26,9 +38,6 @@ const AuthCredentialsForm = ({mode} : authFormProps) => {
   password: ''
  })
 
-// Determine which page mode is active
- const isLoginPage = mode === 'login'
- const isSignUpPage = mode === 'signup'
 
 const handleChange = ( e: React.ChangeEvent<HTMLInputElement>) => {
  const {name , value} = e.target;
@@ -48,7 +57,7 @@ const handleSubmit = (e: React.FormEvent) => {
   return (
     <Flex justify='center' align='center' direction="column" className='h-[86vh]'>
 
-      <AuthTabs />
+      <LinkAuthForm/>
         
       <form onSubmit={handleSubmit}
         style={{borderRadius: '61px 35px 67px 200px'}}
@@ -63,47 +72,44 @@ const handleSubmit = (e: React.FormEvent) => {
          >
             {isSignUpPage && 
             <Div>
-             <StyleInput name='username' type='text' placeholder='نام'
+             <Input name='username' type='text' placeholder='نام'
               value={formData.username}
               onChange={handleChange} />
-
              <Span>
-              <UserIcon size='22'/>
+              <User  size='22'/>
              </Span>
            </Div> 
            }
            
 
           <Div> 
-            <StyleInput name='email' type='email' placeholder='ایمیل'
+            <Input name='email' type='email' placeholder='ایمیل'
              value={formData.email} 
              onChange={handleChange}/> 
-
              <Span>
-               <EmailIcon />
+               <Email />
             </Span>
           </Div>
             
            
           <Div>
-            <StyleInput name='password' type='password' placeholder='رمز' 
+            <Input name='password' type='password' placeholder='رمز' 
             value={formData.password} 
             onChange={handleChange}/>
-            
            <Span>
-            <PasswordIcon />
+            <Password />
           </Span>
           </Div>
           
         </Flex>
 
-         {isLoginPage && 
+         {!isSignUpPage && 
          <div className='bg-white rounded-full mt-2 hover:bg-red-100 cursor-pointer -mr-4 shadow-white shadow-lg w-30 text-center'>
             <span className='text-[12px] text-red-400'>رمزو فراموش کردید</span>
           </div>
           }
           
-        <StyleButton className='mt-5 mr-1 duration-200 hover:w-[71%] w-[70%]'> {isLoginPage ? 'ورود' : 'ثبت نام'} </StyleButton>
+        <Button className='mt-5 mr-1 duration-200 hover:w-[71%] w-[70%]'> {!isSignUpPage ? 'ورود' : 'ثبت نام'} </Button>
 
       </form>
     </Flex>
@@ -111,4 +117,4 @@ const handleSubmit = (e: React.FormEvent) => {
   )
 }
 
-export default AuthCredentialsForm
+export default AuthForm

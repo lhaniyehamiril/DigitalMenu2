@@ -1,5 +1,9 @@
-import AuthCredentialsForm from "@/features/auth/AuthCredentialsForm"
+import AuthForm from "../components/AuthForm"
 
-const SignupPage = () => <AuthCredentialsForm mode='signup' />
+const SignupPage = () => {
+  return (
+    <AuthForm mode='signup' />
+  )
+}
 
 export default SignupPage
