@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { prisma } from '@/lib/prisma/prisma';
+import { prisma } from '@/packages/lib/prisma/prisma';
 import { LoginUseCase } from '@/packages/package-core/core/use-cases/auth/sigin_use_case';
 import { DatabaseUserRepository } from '@/packages/package-core/core/infrastructure/adapters/outbound/database_user_repository';
-import { setCookie } from '@/lib/prisma/auth/cookies';
+import { setCookie } from '@/packages/lib/prisma/auth/cookies';
 
 export async function POST(request: NextRequest) {
   try {

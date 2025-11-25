@@ -1,11 +1,8 @@
-import Link from "next/link";
 
 export default function Home() {
   return (
     <div className="p-10">
-      
-      <Link href='/login' >ورود</Link>
-      
+       home  
     </div>
   );
 }

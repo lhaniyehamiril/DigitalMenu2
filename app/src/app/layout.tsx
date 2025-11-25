@@ -3,10 +3,11 @@ import "@radix-ui/themes/styles.css";
 import { Theme } from "@radix-ui/themes";
 import localFont from 'next/font/local'
 import type { Metadata } from "next";
+import QueryProvider from "@/providers/QueryProvider";
 
 
 const iransans = localFont({
-  src:'./fonts/iransans.ttf' ,
+  src:'../../public/fonts/iransans.ttf' ,
   variable: '--font-iransans'
 })
 
@@ -25,11 +26,13 @@ export default function RootLayout({
       <body
         className={`${iransans.variable} antialiased`}
       >
-        <Theme>
-           <main>
-           {children}
-          </main>
-        </Theme>
+        <QueryProvider>
+           <Theme>
+            <main>
+            {children}
+           </main>
+          </Theme>
+        </QueryProvider>
       </body>
     </html>
   );
