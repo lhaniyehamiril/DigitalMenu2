@@ -6,7 +6,7 @@ import { Timestamps, BaseEntity } from '../in-use/shared';
 export interface MenuBasicProps {
     displayId: string;
     name: string;
-    categories: string[]
+    categories?: string[]
     subName?: string;
     avatar?: string;
     bio?: string;
@@ -20,7 +20,6 @@ export interface Connection {
     contacts?: Contacts[];
 }
 
-export interface MenuCreateInput extends MenuBasicProps, CreateCommonUsecase, BaseEntity { }
 export interface MenuCreateInput extends MenuBasicProps, CreateCommonUsecase, BaseEntity { }
 
 export interface MenuUpdateInput {

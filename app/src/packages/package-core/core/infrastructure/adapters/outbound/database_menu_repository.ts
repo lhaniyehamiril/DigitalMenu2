@@ -1,14 +1,10 @@
-import { PrismaClient } from "@prisma/client";
-import { MenuRepository } from "../../../domain/repositories/menu_repository";
-import { MenuBasicProps, MenuCreateInput } from "@/packages/package-core/types";
+import { PrismaClient } from "@prisma/client/extension";
 import { Menu } from "../../../domain/entities/menu";
-import { UserRepository } from "../../../domain/repositories/user_repository";
-import { User } from "../../../domain/entities/user";
+import { QueryReposity } from "../../../domain/repositories/queryRepo";
 
-export class DatabaseMenuRepository implements MenuRepository {
+export class MenuDatabaseMenuRepository implements Partial<QueryReposity<Menu>> {
     constructor(
-        private menuRepository: MenuRepository,
-        private userRepository: UserRepository
+        private prisma: PrismaClient,
     ) { }
 
     async create(menu: Menu): Promise<Menu> {
@@ -17,13 +13,36 @@ export class DatabaseMenuRepository implements MenuRepository {
             ...menu,
             createdAt: new Date,
             createdBy: ""
-        } as MenuCreateInput
+        } as Menu
         try {
-            return await this.menuRepository.create(final_payload);
+            console.log("data---", final_payload)
+            return await this.prisma.create(final_payload);
         } catch (e) {
-            throw new Error("Error on created")
+            throw new Error("Failed created", e as any)
         }
 
     }
+    async findById(id: string): Promise<Menu | null> {
+        try {
+            return await this.prisma.findById(id);
+        } catch (e) {
+            throw new Error("Failed to find by id")
+        }
+    }
+    async findAll(): Promise<Menu[]> {
+        try {
+            return await this.prisma.findAll();
+        } catch (e) {
+            throw new Error("Failed to fetch all", e as any)
+        }
+    }
+    async delete(id: string): Promise<boolean> {
+        try {
+            return await this.prisma.delete(id)
+        } catch (e) {
+            throw new Error("Failed to delete", e as any)
+        }
+    }
+
 
 }
