@@ -28,8 +28,6 @@ export class SignupUseCase {
             name: input.name,
             createdAt: new Date(),
             updatedAt: new Date(),
-            createdBy: "",
-            updatedBy: ""
         });
 
         const createdUser = await this.userRepository.create(user);
