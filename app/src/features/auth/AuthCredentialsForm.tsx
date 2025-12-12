@@ -2,7 +2,7 @@
 import React, { useState } from 'react'
 import { Flex } from '@radix-ui/themes'
 import { useForm } from 'react-hook-form'
-import { notFound, useRouter } from 'next/navigation'
+import {  useRouter } from 'next/navigation'
 
 import AuthTabs from './AuthTabs'
 import useSignUpMutation from './hooks/useSignUpMutation'
@@ -38,7 +38,7 @@ const handleLogin = (data: FormData) => {
         {
             onSuccess: (res) => {
                 reset()
-                router.push(`/dashboard/${res.data.user.props.id}`)
+                router.push(`/dashboard/profile/${res.data.user.props.id}`)
             }
         }
     )

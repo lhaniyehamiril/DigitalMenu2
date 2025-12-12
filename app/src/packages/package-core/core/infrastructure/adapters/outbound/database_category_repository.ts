@@ -18,7 +18,7 @@ export class DatabasecategoryRepository implements QueryReposity<Category> {
                 id: category.id,
                 name: category.name,
                 menuId: category.menuId,
-                thumNail: category.thumNail,
+                image: category.image,
             },
         });
         return new Category(createdcategory);
@@ -30,15 +30,19 @@ export class DatabasecategoryRepository implements QueryReposity<Category> {
         return true;
     }
 
-    async update(id: string, category: Partial<Category>): Promise<Category> {
-        // TODO
-        return {} as Category
+    async update(id: string, changes: Partial<Category>): Promise<Category> {
+        const updated = await this.prisma.category.update({
+            where: { id },
+            data: changes
+        })
+        return new Category(updated)
     }
 
     async findAll(): Promise<Category[]> {
         try {
             const response = await this.prisma.category.findMany();
-            return response.map(c => new Category(c));
+            // return response.map(c => new Category(c));
+            return response as any[]
         } catch (e) {
             throw new Error("Faild to find all", e as any)
         }

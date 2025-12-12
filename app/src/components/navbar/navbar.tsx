@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import {
   Drawer,
@@ -14,11 +14,27 @@ import {
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import { useCurrentUser } from "@/providers/UserProvider";
+import { getCurrentMenu } from "@/packages/lib/prisma/auth/menu-auth.ts";
 
 export default function MainMenu() {
   const [open, setOpen] = useState(false);
+  const [currentMenuId, setCurrentMenuId] = useState<null | string>(null)
   const currentUser = useCurrentUser();
+  // console.log('current user id', currentMenuId)
+  // if(!currentUser) return notFound();
   const toggle = () => setOpen(!open);
+
+  useEffect(() => {
+    async function fetchMenu() {
+      const c = await getCurrentMenu();
+      if (!c) {
+        setCurrentMenuId(null);
+        return;
+      }
+      setCurrentMenuId(c.id!);
+    }
+    fetchMenu();
+  })
 
   return (
     <>
@@ -31,26 +47,27 @@ export default function MainMenu() {
           <Typography variant="h6" sx={{ mb: 2, textAlign: "center" }}>
             منوی من
           </Typography>
+          {currentUser && (
 
-          <List>
-            <ListItemButton component={Link} href="/dashboard/categories">
-              <ListItemText primary="دسته‌ها" />
-            </ListItemButton>
 
-            <ListItemButton component={Link} href="/dashboard/products">
-              <ListItemText primary="محصولات" />
-            </ListItemButton>
-
-            {currentUser && (
+            <List>
               <ListItemButton
                 component={Link}
-                href={`/dashboard/${currentUser.id}`}
+                href={`/dashboard/profile/${currentUser.id}`}
               >
                 <ListItemText primary="حساب کاربری" />
               </ListItemButton>
-            )}
-          </List>
+              <ListItemButton component={Link} href={`/dashboard/category?menuId=${currentMenuId}`}>
+                <ListItemText primary="دسته‌ها" />
+              </ListItemButton>
 
+              {/* <ListItemButton component={Link} href="/dashboard/products">
+                <ListItemText primary="محصولات" />
+              </ListItemButton> */}
+
+
+            </List>
+          )}
           {!currentUser && (
             <Box sx={{ mt: 3 }}>
               <Button

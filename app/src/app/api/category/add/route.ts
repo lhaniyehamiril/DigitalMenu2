@@ -6,7 +6,7 @@ import { CreateCategoryUseCase } from "@/packages/package-core/core/use-cases/ca
 
 export async function POST(req: NextRequest) {
   try {
-    const body = await req.json() as { name: string; menuId: string; thumNail?: string };
+    const body = await req.json() as { name: string; menuId: string; image?: string };
 
     if (!body.name || !body.menuId) {
       return NextResponse.json({ success: false, message: "Name and menuId are required" }, { status: 400 });
@@ -23,7 +23,7 @@ export async function POST(req: NextRequest) {
     const createdCategory = await addCategoryUseCase.execute({
       name: body.name,
       menuId: body.menuId,
-      thumNail: body.thumNail ?? "",
+      image: body.image ?? "",
     });
 
     return NextResponse.json({ success: true, data: createdCategory }, { status: 201 });

@@ -4,7 +4,7 @@ import { Timestamps, BaseEntity, AuthorSignature } from '../in-use/shared';
 
 export interface CategoryBasicProps {
     name: string;
-    thumNail: string;
+    image: string;
     menuId: string
 }
 

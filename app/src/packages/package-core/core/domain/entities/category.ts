@@ -11,7 +11,7 @@ export class Category {
   get id() { return this.props.id; }
   get name() { return this.props.name; }
   get menuId() { return this.props.menuId }
-  get thumNail() { return this.props.thumNail }
+  get image() { return this.props.image }
   // get createdAt() { return this.props.createdAt; }
   // get updatedAt() { return this.props.updatedAt; }
   // get updatedBy() { return this.props.updatedBy; }

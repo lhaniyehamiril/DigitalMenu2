@@ -1,6 +1,7 @@
 import { PrismaClient } from "@prisma/client/extension";
 import { Menu } from "../../../domain/entities/menu";
 import { QueryReposity } from "../../../domain/repositories/queryRepo";
+import { Prisma } from "../../../../../../../generated/prisma/browser";
 
 export class MenuDatabaseMenuRepository implements Partial<QueryReposity<Menu>> {
     constructor(
@@ -12,10 +13,8 @@ export class MenuDatabaseMenuRepository implements Partial<QueryReposity<Menu>> 
         const final_payload = {
             ...menu,
             createdAt: new Date,
-            // createdBy: ""
         } as Menu
         try {
-            console.log("data---", final_payload)
             return await this.prisma.menu.create({ data: menu });
         } catch (e) {
             throw new Error("Failed created", e as any)
@@ -60,5 +59,28 @@ export class MenuDatabaseMenuRepository implements Partial<QueryReposity<Menu>> 
             throw new Error("Faild to find one ", e as any)
         }
     }
+    async findByField(key: string, value: string): Promise<Menu[]> {
+        try {
+            return await this.prisma.menu.findMany({
+                where: {
+                    [key]: value
+                }
+            });
+        } catch (e) {
+            throw new Error(`Failed to fetch by field: ${e instanceof Error ? e.message : e}`)
+        }
+    }
+    async findByFieldUnique(
+        where: Prisma.MenuWhereUniqueInput
+    ): Promise<Menu | null> {
+        try {
+            return await this.prisma.menu.findUnique({
+                where
+            });
+        } catch (e) {
+            throw new Error(`Failed to fetch by field: ${e instanceof Error ? e.message : String(e)}`);
+        }
+    }
+
 
 }

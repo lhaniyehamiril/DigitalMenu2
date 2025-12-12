@@ -5,6 +5,7 @@ import { Timestamps, BaseEntity } from '../in-use/shared';
 
 export interface MenuBasicProps {
     displayId: string;
+    userId:string;
     name: string;
     subname?: string;
     avatar?: string;

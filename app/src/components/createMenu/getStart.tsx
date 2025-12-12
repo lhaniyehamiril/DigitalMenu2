@@ -79,7 +79,7 @@ export default function MenuCreateStepper() {
 
       // redirect after 1 sec
       setTimeout(() => {
-        router.push(`/dashboard/${currentUser?.id}`);
+        router.push(`/dashboard/profile/${currentUser?.id}`);
       }, 1000);
 
     } catch (err) {

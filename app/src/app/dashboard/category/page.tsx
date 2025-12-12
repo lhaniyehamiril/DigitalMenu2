@@ -1,26 +1,22 @@
-import CategoryPageClient from "@/components/category/doCraete";
+import CategoryPageClient from "@/components/category/listPage";
 import { getCurrentUser } from "@/packages/lib/prisma/auth/aw-auth";
-import { notFound } from "next/navigation";
-
+import { getCurrentMenu } from "@/packages/lib/prisma/auth/menu-auth.ts";
+import { redirect } from 'next/navigation'
 export default async function CategoriesPage({
   searchParams,
 }: {
   searchParams: Promise<{ menuId?: string }>;
 }) {
-  const currentUser = await getCurrentUser();
+  const currentMenu = await getCurrentMenu();
 
-  if (!currentUser) return notFound()
+  const { menuId } = await searchParams;
 
-  // Get menuId from query params
-  const {menuId} = await searchParams;
-
-  if (!menuId) {
-    return <div>منو پیدا نشد</div>;
-  }
+  if (!currentMenu || !menuId) redirect("/auth");
+  if (menuId !== currentMenu.id) redirect('/auth');
 
   return (
-    <div style={{ padding: "20px" }}>
-      <CategoryPageClient menuId={menuId} />
+    <div className="p-5 max-w-[500px] mx-auto">
+      <CategoryPageClient menuId={currentMenu.id!} />
     </div>
   );
 }
