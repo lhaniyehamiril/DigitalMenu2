@@ -39,8 +39,8 @@ export default function MainMenu() {
     fetchMenu();
   })
   
-  // dont show navbar on menu detail page
-  if(pahtname.startsWith("/menu/")) return null
+  // dont show navbar on menu detail page or auth page
+  if(pahtname.startsWith("/menu/") || pahtname.startsWith("/auth")) return null
 
 
   return (
