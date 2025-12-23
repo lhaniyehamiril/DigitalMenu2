@@ -36,6 +36,7 @@ export async function getCurrentUser() {
       avatar: (user as any).avatar ?? null,
     } as UserProps;
   } catch (err) {
+    console.error('error in getCurrentUser: ', err)
     return null; // invalid token, expired, etc.
   }
 }

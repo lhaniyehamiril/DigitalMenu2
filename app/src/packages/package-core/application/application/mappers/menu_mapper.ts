@@ -9,6 +9,7 @@ export class MenuMapper {
       avatar: dto.avatar,
       connections: dto.connections,
       bio: dto.bio,
+      userId: userId,
     });
   }
 
