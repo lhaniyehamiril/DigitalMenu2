@@ -20,7 +20,7 @@ import { toast } from "sonner";
 import { Flex } from "@radix-ui/themes";
 import { IoIosCheckmarkCircle } from "react-icons/io";
 
-const steps = ["نام منو", "توضیحات", "آواتار"];
+const steps = [ "نام", "توضیحات", "آواتار"];
 
 export default function MenuCreateStepper() {
   const router = useRouter();
@@ -128,10 +128,12 @@ export default function MenuCreateStepper() {
 
     >
       {/* STEPPER */}
-      <Stepper className={`translate-x-[25px]!`} activeStep={activeStep} alternativeLabel>
+      <Stepper className={`translate-x-3!`}
+       activeStep={activeStep}
+        >
         {steps.map((label) => (
           <Step key={label}>
-            <StepLabel sx={{'& .MuiStepLabel-label': {fontSize: '12px',},}} >{label}</StepLabel>
+            <StepLabel sx={{'& .MuiStepLabel-label': {fontSize: '12px', marginRight: 0.5},}} >{label}</StepLabel>
           </Step>
         ))}
       </Stepper>
