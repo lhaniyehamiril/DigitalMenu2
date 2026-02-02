@@ -1,42 +1,43 @@
 // User Auth 
 
-import { UserCreateInput, UserLoginOutput } from "@/packages/package-core/types";
 import { User } from "../../domain/entities/user";
-import { UserRepository } from "../../domain/repositories/user_repository";
-
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+import { QueryReposity } from "../../domain/repositories/queryRepo";
+import { SignUpRequest, SignUpResponse } from "@/packages/package-core/application/dtos";
 
 export class SignupUseCase {
     constructor(
-        private userRepository: UserRepository,
+        private userRepository: QueryReposity<User>,
         private jwtSecret: string,
     ) { }
 
-    async execute(input: UserCreateInput): Promise<UserLoginOutput> {
+    async execute(input: SignUpRequest): Promise<SignUpResponse> {
 
-        const existingUser = await this.userRepository.findByEmail(input.email);
+        const existingUser = await this.userRepository.findUnique(input.email);
         if (existingUser) {
             throw new Error('User already exists');
         }
 
         const hashedPassword = await bcrypt.hash(input.password, 10);
 
+
         const user = new User({
             email: input.email,
             password: hashedPassword,
             name: input.name,
-            avatar: ''
-            // createdAt: new Date(),
-            // updatedAt: new Date(),
+            avatar: '',
         });
-
         const createdUser = await this.userRepository.create(user);
-
+        if (!createdUser.id || !createdUser.email) throw new Error('Error on create user response')
         const token = this.generateToken(createdUser.id!);
 
         return {
-            user: createdUser,
+            user: {
+                id: createdUser.id,
+                name: createdUser.name,
+                email: createdUser.email,
+            },
             token
         };
     }

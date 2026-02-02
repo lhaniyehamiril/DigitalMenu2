@@ -7,7 +7,7 @@ export async function GET(req: NextRequest) {
     try {  
 
         const menuRepository = new MenuDatabaseMenuRepository(prisma);
-        const menuUseCase = new ListMenusUseCase(menuRepository);
+        const menuUseCase = new ListMenusUseCase(menuRepository as any);
 
         const result = await menuUseCase.execute();
 

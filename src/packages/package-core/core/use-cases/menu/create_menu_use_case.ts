@@ -1,4 +1,4 @@
-import { MenuBasicProps, MenuCreateInput, UserProps } from "@/packages/package-core/types";
+import { CreateMenuResponse, CreateMenuRquest } from "@/packages/package-core/application/dtos";
 import { Menu } from "../../domain/entities/menu";
 import { QueryReposity } from "../../domain/repositories/queryRepo";
 
@@ -18,11 +18,22 @@ export class CreateMenuUseCase {
         }
     }
 
-    async execute(menuData: MenuBasicProps): Promise<Menu> {
-
+    async execute(menuData: CreateMenuRquest): Promise<CreateMenuResponse> {
+        const crateMenuInput = new Menu({
+            ...menuData
+        })
         if (await this.#checkForSameDId(menuData.displayId)) throw new Error("displayId already exists, displayId must be unique");
-        const create = await this.menuRepository.create(menuData as any);
-        return new Menu(create)
+        const created = await this.menuRepository.create(crateMenuInput);
+        return {
+            id: created.id!,
+            displayId: created.displayId!,
+            name: created.name,
+            userId: created.userId!,
+            avatar: created.avatar,
+            bio: created.bio,
+            connections: created.connections,
+            subname: created.subname 
+        }
     }
 
 }

@@ -29,6 +29,7 @@ export async function getCurrentUser() {
     const useCase = new FindUserByIdUseCase(userRepository);
     const user = await useCase.execute(decoded.userId);
     if (!user) return null;
+    console.log('current user',user)
     return {
       id: user.id,
       email: user.email,

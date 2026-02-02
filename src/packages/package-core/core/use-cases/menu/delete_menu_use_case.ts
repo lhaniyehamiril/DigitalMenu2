@@ -4,7 +4,7 @@ import { QueryReposity } from "../../domain/repositories/queryRepo";
 export class DeleteMenuUseCase {
     constructor(private menuRepository: QueryReposity<Menu>) {}
 
-    async execute(id: string): Promise<void> {
-        await this.menuRepository.delete(id);
+    async execute(id: string): Promise<boolean> {
+      return await this.menuRepository.delete(id);
     }
 }

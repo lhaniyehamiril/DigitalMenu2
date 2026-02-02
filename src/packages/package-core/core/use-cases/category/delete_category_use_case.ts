@@ -6,10 +6,10 @@ export class DeleteCategoryUseCase {
         private categoryRepository: QueryReposity<CategoryProps>
     ) { }
 
-    async execute(categoryId: string): Promise<boolean> {
+    async execute(id: string): Promise<boolean> {
 
-        const listAll = await this.categoryRepository.delete(categoryId);
-        return listAll
+        const deleted = await this.categoryRepository.delete(id);
+        return deleted;
     }
 
 }

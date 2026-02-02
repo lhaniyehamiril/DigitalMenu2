@@ -4,7 +4,7 @@ import { PrismaClient } from '@/generated/prisma/client';
 import { Category } from '../../../domain/entities/category';
 import { QueryReposity } from '../../../domain/repositories/queryRepo';
 
-export class DatabasecategoryRepository implements QueryReposity<Category> {
+export class DatabasecategoryRepository implements Partial<QueryReposity<Category>> {
     constructor(private prisma: PrismaClient) { }
 
     async findById(id: string): Promise<Category | null> {
@@ -12,13 +12,12 @@ export class DatabasecategoryRepository implements QueryReposity<Category> {
         return category ? new Category(category) : null;
     }
 
-    async create(category: Category): Promise<Category> {
+    async create(input: Category): Promise<Category> {
         const createdcategory = await this.prisma.category.create({
             data: {
-                id: category.id,
-                name: category.name,
-                menuId: category.menuId,
-                image: category.image,
+                name: input.name!,
+                menuId: input.menuId!,
+                image: input.image!,
             },
         });
         return new Category(createdcategory);
@@ -45,6 +44,25 @@ export class DatabasecategoryRepository implements QueryReposity<Category> {
             return response as any[]
         } catch (e) {
             throw new Error("Faild to find all", e as any)
+        }
+    }
+    async findByField(key: string, value: any): Promise<Category[] | null> {
+        try {
+            const response = await this.prisma.category.findMany({
+                where: { [key]: value }
+            })
+            const ArrayResponse: Category[] = [];
+            response.forEach((c) => {
+                ArrayResponse.push(new Category({
+                    id: c.id,
+                    image: c.image,
+                    menuId: c.menuId,
+                    name: c.name
+                }))
+            });
+            return ArrayResponse;
+        } catch (e) {
+            throw new Error("Faild to find by field", e as any)
         }
     }
 }

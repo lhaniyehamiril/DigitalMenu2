@@ -1,12 +1,21 @@
-import { MenuBasicProps } from "@/packages/package-core/types";
+import { UpdateMenuRequest, UpdateMenuResponse } from "@/packages/package-core/application/dtos";
 import { Menu } from "../../domain/entities/menu";
 import { QueryReposity } from "../../domain/repositories/queryRepo";
 // UPDATE
 export class UpdateMenuUseCase {
-    constructor(private menuRepository: QueryReposity<Menu>) {}
+    constructor(private menuRepository: QueryReposity<Menu>) { }
 
-    async execute(id: string, data: Partial<MenuBasicProps>): Promise<Menu> {
-        const updated = await this.menuRepository.update(id, data as any);
-        return new Menu(updated);
+    async execute({ id, data }: UpdateMenuRequest): Promise<UpdateMenuResponse> {
+        const updated = await this.menuRepository.update(id, data);
+        return {
+            id: updated.id!,
+            displayId: updated.displayId!,
+            userId: updated.userId!,
+            name: updated.name,
+            subname: updated.subname,
+            avatar: updated.avatar,
+            bio: updated.bio,
+            connections: updated.connections,
+        };
     }
 }

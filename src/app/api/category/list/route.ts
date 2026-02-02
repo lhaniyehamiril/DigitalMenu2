@@ -8,7 +8,7 @@ export async function GET(req: NextRequest) {
     try {
 
         const categoryRepository = new DatabasecategoryRepository(prisma);
-        const categoryUseCase = new ListCategoriesByMenuIdUseCase(categoryRepository);
+        const categoryUseCase = new ListCategoriesByMenuIdUseCase(categoryRepository as any);
 
         // Check user authentication
         const currentMenu = await getCurrentMenu();

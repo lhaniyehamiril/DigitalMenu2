@@ -1,6 +1,6 @@
 import { prisma } from "@/lib/prisma/prisma";
-import { MenuDatabaseMenuRepository } from "@/packages/package-core/core/infrastructure/adapters/outbound/database_product_respository";
-import { CreateProductUseCase } from "@/packages/package-core/core/use-cases/product/adP_product_use_case";
+import { DatabaseProductRepository } from "@/packages/package-core/core/infrastructure/adapters/outbound/database_product_respository";
+import { CreateProductUseCase } from "@/packages/package-core/core/use-cases/product/add_product_use_case";
 import { ProductBasicProps } from "@/packages/package-core/types";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -21,7 +21,7 @@ export async function POST(req: NextRequest) {
             title: body.title
         }
 
-        const productRepository = new MenuDatabaseMenuRepository(prisma);
+        const productRepository = new DatabaseProductRepository(prisma);
         const addProductUseCase = new CreateProductUseCase(productRepository as any);
 
         const createdProduct = await addProductUseCase.execute(payload);
