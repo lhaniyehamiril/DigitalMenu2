@@ -57,7 +57,7 @@ export class DatabasecategoryRepository implements Partial<QueryReposity<Categor
                     id: c.id,
                     image: c.image,
                     menuId: c.menuId,
-                    name: c.name
+                    name: c.name    
                 }))
             });
             return ArrayResponse;

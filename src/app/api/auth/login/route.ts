@@ -15,9 +15,9 @@ export async function POST(request: NextRequest) {
     if (!TOKEN_NAME) throw new Error("Invalid TOKEN_NAME")
 
     const userRepository = new DatabaseUserRepository(prisma);
-    const loginUseCase = new LoginUseCase(userRepository, JWT_SECRET);
+    const loginUseCase = new LoginUseCase(userRepository as any, JWT_SECRET);
 
-    const result = await loginUseCase.execute(email, password) as any;
+    const result = await loginUseCase.execute({email, password}) as any;
     if (result.status) {
       return NextResponse.json({
         success: false,

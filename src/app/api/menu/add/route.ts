@@ -1,13 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma/prisma";
-import { MenuBasicProps } from "@/packages/package-core/types";
+import { MenuProps } from "@/packages/package-core/types";
 import { MenuDatabaseMenuRepository } from "@/packages/package-core/core/infrastructure/adapters/outbound/database_menu_repository";
 import { CreateMenuUseCase } from "@/packages/package-core/core/use-cases/menu/create_menu_use_case";
 import { getCurrentUser } from "@/lib/auth/aw-auth";
 
 export async function POST(req: NextRequest) {
   try {
-    const body = (await req.json()) as Partial<MenuBasicProps>;
+    const body = (await req.json()) as Partial<MenuProps>;
     const { displayId, name } = body;
 
     // Validate required fields
@@ -29,7 +29,7 @@ export async function POST(req: NextRequest) {
 
     // Setup repo + use case
     const menuRepository = new MenuDatabaseMenuRepository(prisma);
-    const createMenuUseCase = new CreateMenuUseCase(menuRepository);
+    const createMenuUseCase = new CreateMenuUseCase(menuRepository as any);
 
     // Prepare input for use case
     const menuData = {

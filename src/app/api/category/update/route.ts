@@ -18,7 +18,7 @@ export async function PATCH(req: NextRequest) {
         }
 
         const categoryRepository = new DatabasecategoryRepository(prisma);
-        const updateCategory = new UpdateCategoryUseCase(categoryRepository);
+        const updateCategory = new UpdateCategoryUseCase(categoryRepository as any);
 
         const updatedCategory = await updateCategory.execute({ id, updates: changes });
 

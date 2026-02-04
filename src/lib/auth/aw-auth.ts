@@ -26,7 +26,7 @@ export async function getCurrentUser() {
     // Use the use case
 
     const userRepository = new DatabaseUserRepository(prisma);
-    const useCase = new FindUserByIdUseCase(userRepository);
+    const useCase = new FindUserByIdUseCase(userRepository as any);
     const user = await useCase.execute(decoded.userId);
     if (!user) return null;
     console.log('current user',user)
