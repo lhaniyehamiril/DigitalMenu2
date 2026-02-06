@@ -2,9 +2,9 @@ import { CategoryProps } from "@/packages/package-core/types";
 
 // Categoey
 export class Category {
-  private props: CategoryProps;
+  private props: Partial<CategoryProps>;
 
-  constructor(props: CategoryProps) {
+  constructor(props: Partial<CategoryProps>) {
     this.props = props;
   }
 

@@ -8,7 +8,7 @@ export async function DELETE(req: NextRequest) {
         const { id } = await req.json() as { id: string }
 
         const categoryRepository = new DatabasecategoryRepository(prisma);
-        const deleteCategoryById = new DeleteCategoryUseCase(categoryRepository);
+        const deleteCategoryById = new DeleteCategoryUseCase(categoryRepository as any);
 
         await deleteCategoryById.execute(id);
        return new NextResponse(null, { status: 204 })

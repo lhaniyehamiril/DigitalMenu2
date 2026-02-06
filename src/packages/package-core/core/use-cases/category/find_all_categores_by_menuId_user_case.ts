@@ -1,16 +1,26 @@
-import { CategoryBasicProps, CategoryProps } from "@/packages/package-core/types";
 import { QueryReposity } from "../../domain/repositories/queryRepo";
+import { ListCategoriesByMenuIdResponse } from "@/packages/package-core/application/dtos";
+import { Category } from "../../domain/entities/category";
 
 export class ListCategoriesByMenuIdUseCase {
     constructor(
-        private categoryRepository: QueryReposity<CategoryProps>
+        private categoryRepository: QueryReposity<Category>
     ) { }
 
-    async execute(menuId: string): Promise<CategoryProps[]> {
+    async execute(menuId: string): Promise<ListCategoriesByMenuIdResponse> {
 
-        const listAll = await this.categoryRepository.findAll();
-        const listAllByMenuId = listAll.filter(c => c.menuId === menuId)
-        return listAllByMenuId;
+        const response = await this.categoryRepository.findByField('menuId', menuId);
+        if (!response) return [];
+        let arrayResponse: ListCategoriesByMenuIdResponse = [];
+        response.forEach((c) => {
+            arrayResponse.push({
+                id: c.id!,
+                image: c.image!,
+                menuId: c.menuId!,
+                name: c.name!,
+            })
+        })
+        return arrayResponse;
     }
 
 }

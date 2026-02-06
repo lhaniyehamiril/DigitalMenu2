@@ -1,10 +1,10 @@
-import { MenuResponse } from "@/packages/package-core/types";
+import { BaseEntity, MenuProps } from "@/packages/package-core/types";
 
 // Menu
 export class Menu {
-    private props: MenuResponse;
+    private props: Partial<MenuProps & BaseEntity>;
 
-    constructor(props: MenuResponse) {
+    constructor(props: Partial<MenuProps & BaseEntity>) {
         this.props = props;
     }
 
@@ -16,8 +16,4 @@ export class Menu {
     get bio() { return this.props.bio; }
     get connections() { return this.props.connections; }
     get displayId() { return this.props.displayId; }
-    get createdAt() { return this.props.createdAt; }
-    get updatedAt() { return this.props.updatedAt; }
-    // get updatedBy() { return this.props.updatedBy; }
-    // get createdBy() { return this.props.createdBy; }
 }

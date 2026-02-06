@@ -4,7 +4,7 @@ import { PrismaClient } from "@prisma/client/extension";
 import { User } from '../../../domain/entities/user';
 import { QueryReposity } from '../../../domain/repositories/queryRepo';
 
-export class DatabaseUserRepository implements QueryReposity<User> {
+export class DatabaseUserRepository implements Partial<QueryReposity<User>> {
   constructor(private prisma: PrismaClient) { }
 
   async findById(id: string): Promise<User | null> {
@@ -12,7 +12,7 @@ export class DatabaseUserRepository implements QueryReposity<User> {
     return user ? new User(user) : null;
   }
 
-  async findByEmail(email: string): Promise<User | null> {
+  async findUnique(email: string): Promise<User | null> {
     const user = await this.prisma.user.findUnique({ where: { email } });
     return user ? new User(user) : null;
   }

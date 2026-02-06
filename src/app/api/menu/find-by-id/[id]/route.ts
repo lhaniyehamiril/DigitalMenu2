@@ -15,7 +15,7 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ id: 
         }
 
         const menuRepository = new MenuDatabaseMenuRepository(prisma);
-        const findMenuById = new FindMenuByIdUseCase(menuRepository);
+        const findMenuById = new FindMenuByIdUseCase(menuRepository as any);
 
         const res = await findMenuById.execute(id)
 

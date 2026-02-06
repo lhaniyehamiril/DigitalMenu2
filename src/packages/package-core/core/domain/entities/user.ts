@@ -1,13 +1,13 @@
 import { UserProps } from "@/packages/package-core/types";
 
 export class User {
-  private props: UserProps;
+  private props: Partial<UserProps>;
 
-  constructor(props: UserProps) {
+  constructor(props: Partial<UserProps>) {
     this.props = props;
   }
 
-  get id(): string | undefined { return this.props.id; }
+  get id()  { return this.props.id; }
   get email() { return this.props.email; }
   get password() { return this.props.password; }
   get name() { return this.props.name; }

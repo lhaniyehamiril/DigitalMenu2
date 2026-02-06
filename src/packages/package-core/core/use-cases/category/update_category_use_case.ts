@@ -1,20 +1,19 @@
-import { CategoryProps } from "@/packages/package-core/types";
 import { QueryReposity } from "../../domain/repositories/queryRepo";
+import { Category } from "../../domain/entities/category";
+import { UpdateCategoryRequest, UpdatedCategoryResponse } from "@/packages/package-core/application/dtos";
 
 export class UpdateCategoryUseCase {
     constructor(
-        private categoryRepository: QueryReposity<CategoryProps>
-    ) {}
+        private categoryRepository: QueryReposity<Category>
+    ) { }
 
-    /**
-     * Updates a category by its ID with the provided fields.
-     * @param categoryId - The ID of the category to update
-     * @param changes - Partial fields to update
-     * @returns The updated category
-     */
-    async execute(categoryId: string, changes: Partial<CategoryProps>): Promise<CategoryProps> {
-        const updatedCategory = await this.categoryRepository.update(categoryId, changes);
-        
-        return updatedCategory;
+    async execute({ id, updates }: UpdateCategoryRequest): Promise<UpdatedCategoryResponse> {
+        const updatedCategory = await this.categoryRepository.update(id, updates);
+        return {
+            id: updatedCategory.id!,
+            image: updatedCategory.image!,
+            menuId: updatedCategory.menuId!,
+            name: updatedCategory.name!
+        }
     }
 }

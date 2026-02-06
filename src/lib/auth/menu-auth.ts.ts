@@ -10,7 +10,7 @@ export async function getCurrentMenu() {
     if (!currentUser) return null;
 
     const menuDBRepo = new MenuDatabaseMenuRepository(prisma);
-    const findUniqueMenuUseCase = new FindMenuByUserIdUseCase(menuDBRepo)
+    const findUniqueMenuUseCase = new FindMenuByUserIdUseCase(menuDBRepo as any)
     const result = await findUniqueMenuUseCase.execute(currentUser.id!);
     return {
         name: result?.name,

@@ -18,7 +18,7 @@ export async function POST(req: NextRequest) {
     }
 
     const categoryRepository = new DatabasecategoryRepository(prisma);
-    const addCategoryUseCase = new CreateCategoryUseCase(categoryRepository);
+    const addCategoryUseCase = new CreateCategoryUseCase(categoryRepository as any);
 
     const createdCategory = await addCategoryUseCase.execute({
       name: body.name,

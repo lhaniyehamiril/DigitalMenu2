@@ -1,16 +1,17 @@
 import { User } from "../../domain/entities/user";
-import { UserRepository } from "../../domain/repositories/user_repository";
 import { compare } from "bcryptjs";
 import jwt from "jsonwebtoken";
+import { SignInRequest, SignInResponse } from "@/packages/package-core/application/dtos";
+import { QueryReposity } from "../../domain/repositories/queryRepo";
 
 export class LoginUseCase {
   constructor(
-    private userRepository: UserRepository,
+    private userRepository: QueryReposity<User>,
     private jwtSecret: string,
   ) { }
 
-  async execute(email: string, password: string): Promise<{ user: User; token: string } | { message: string; status: number }> {
-    const user = await this.userRepository.findByEmail(email);
+  async execute(input: SignInRequest): Promise<SignInResponse> {
+    const user = await this.userRepository.findUnique(input.email);
 
     if (!user) {
       return {
@@ -18,7 +19,7 @@ export class LoginUseCase {
         status: 404,
       }
     }
-    const passwordIsValid = await compare(password, user.password);
+    const passwordIsValid = await compare(input.password, user.password!);
     if (!passwordIsValid) {
       return {
         message: "Invalid password",
@@ -28,9 +29,14 @@ export class LoginUseCase {
 
     const token = this.generateToken(user.id!);
 
-    const { password: _, ...safeUser } = user as any;
-
-    return { user: safeUser, token };
+    return {
+      user: {
+        id: user.id!,
+        email: user.email!,
+        name: user.name,
+        avatar: user.avatar
+      }, token
+    };
   }
 
   private generateToken(userId: string): string {

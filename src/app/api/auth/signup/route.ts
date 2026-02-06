@@ -23,7 +23,7 @@ export async function POST(req: NextRequest) {
         if (!JWT_SECRET) throw new Error("Invalid JWT_SECRET")
         if (!TOKEN_NAME) throw new Error("Invalid TOKEN_NAME")
         const userRepository = new DatabaseUserRepository(prisma);
-        const signupUseCase = new SignupUseCase(userRepository, JWT_SECRET);
+        const signupUseCase = new SignupUseCase(userRepository as any, JWT_SECRET);
         const result = await signupUseCase.execute({ name, email, password })
         const res = NextResponse.json({
             success: true,
