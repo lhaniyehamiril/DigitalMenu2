@@ -65,7 +65,7 @@ export default function ProductListPageClient({ menuId }: { menuId: string }) {
     }, [categories]);
 
     return (
-        <div className="max-w-[480px] overflow-hidden mx-auto">
+        <div className="max-w-[480px] overflow-hidden mx-auto mb-10">
             {
                 categories.length < 1 ?
                     (

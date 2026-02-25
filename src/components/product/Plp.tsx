@@ -1,5 +1,8 @@
 import { FindManyProductByCategoryResponse } from "@/packages/package-core/application/dtos";
+import Image from "next/image";
 import Link from "next/link";
+import { motion } from 'motion/react'
+import { variantScale } from "../style";
 
 export interface IListProducts {
     initial: FindManyProductByCategoryResponse,
@@ -19,29 +22,41 @@ export function ListProducts({
     // }
 
     return (
-        <section className="grid grid-cols-2 gap-x-1 gap-y-3 w-full overflow-x-scroll mt-30">
+        <section
+        className="grid grid-cols-2 gap-5 w-full max-[444px]:w-[90%] max-w-[400px] mt-10 mx-auto">
             {
-                initial.map(c => (
-                    <Link
-                    href={`/menu/product/${menuId}/${c.id}`}
-                        key={c.id}
+               initial.map(c => (
+                 <Link
+                   href={`/menu/product/${menuId}/${c.id}`}
+                    key={c.id}
                         // onClick={() => selectedItem(c.id)}
-                        className={`mx-auto w-44 sm:w-52 items-center p-1 overflow-hidden `}>
-                        <div className="h-96 overflow-hidden rounded">
-                            <img
-                            src={c.media}
-                            className="object-cover h-full"
-                            alt={c.title ?? 'category title'}
-                        />
-                        </div>
-                        <div className="pt-1">
-                            <p>{c.title}</p>
-                            <p className="text-green-800 font-semibold">{c.price?.toLocaleString('fa-IR')}</p>
-                        </div>
+                      >
+
+                    <div className="w-full h-40 relative overflow-hidden rounded-xl">
+                        
+                        <Image  
+                         alt={c.title ?? 'category title'}
+                         src={"/images/imageRes.webp"}
+                         fill
+                          />
+
+                        {/* bg black to white */}
+                         <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent"></div>
+                          
+                        <div className="z-10 text-[13px] bottom-3 absolute flex flex-col gap-1 right-2">
+                          <h1 className="text-white">{c.title}</h1>
+                            <motion.span
+                              variants={variantScale}
+                              initial='hidden'
+                              animate='visible'
+                            className="text-green-200 font-semibold">{c.price?.toLocaleString('fa-IR')}</motion.span>
+                         </div> 
+                        
+                         </div>
+                          
                     </Link>
                 ))
             }
         </section>
     )
-
 }

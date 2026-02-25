@@ -5,7 +5,7 @@ import { SiGooglemarketingplatform } from "react-icons/si";
 
 export default function Home() {
   return (
-      <div className="m gap-8 flex justify-center items-center flex-col">
+      <div className=" gap-8 flex justify-center items-center flex-col">
 
       <SiGooglemarketingplatform size={50} color="#444" />
 

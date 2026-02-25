@@ -33,7 +33,7 @@ const MenuDetails = ({ id }: { id: string }) => {
       </button>
 
 
-      <div className="absolute bottom-50 right-7">
+      <div className="absolute bottom-52 right-7">
         <Flex align='center'>
           <motion.div
             variants={variantScale}
@@ -58,17 +58,19 @@ const MenuDetails = ({ id }: { id: string }) => {
       </div>
 
       {/* line image */}
-      <Flex justify='center' align='center' className="w-full absolute bottom-26">
+      <Flex justify='center' align='center' className="w-full absolute bottom-24">
         <div className="w-[90%] min-[480px]:w-[440px] h-23 
           scale-[1] bg-[url('/images/line.webp')] bg-center bg-cover"></div>
       </Flex>
+
       <div className="w-full flex justify-center">
         <Link
           href={`/menu/plp/${id}`}
-          className="max-w-md text-center w-[300px] absolute bottom-13 rounded py-1.5 mx-auto cursor-pointer text-white bg-blue-500 z-100">
+          className="max-w-md text-center w-[87%] absolute bottom-13 rounded-xl py-2 mx-auto cursor-pointer bg-gray-200  z-100">
           مشاهده منو
         </Link>
       </div>
+
     </motion.div>
   )
 }

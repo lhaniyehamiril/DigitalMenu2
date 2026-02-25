@@ -1,6 +1,7 @@
-import { Box, Card, CardActionArea, CardContent, Typography, Grid, IconButton } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
+import {motion} from 'motion/react'
+import { variantXRight } from "../style";
 
 interface Category {
   id: string;
@@ -17,64 +18,43 @@ interface GridListProps {
 
 export function GridList({ list, onDelete, onEdit }: GridListProps) {
   return (
-    <Box mt={4}>
-      <Grid container spacing={2}>
+      <div className="bg-[#eee] flex flex-col items-center justify-center p-4 rounded-3xl min-[444px]:grid min-[444px]:grid-cols-2 gap-5 max-[444px]:w-[98%] max-w-[430px] mt-10 mx-auto">
+        {list.length === 0 && <span >دسته بندی ایی نیست</span>}
         {list.map((cat, i) => (
-          <Grid
-           
+          <motion.div
+            variants={variantXRight}
+             initial='hidden'
+             animate='visible'
             key={cat.id || i}
+            className={`rounded-full w-48 relative max-[444px]:w-[96%] bg-white shrink-0 flex items-center gap-2 py-[5px] pr-1 ${!cat.image && 'py-3!'}`}
           >
-            <Card sx={{ position: "relative" }}>
-              <CardActionArea>
+        
                 {cat.image && (
                   <img
-                    src={cat.image}
+                    src={'/images/imageRes.webp'}
                     alt={cat.name}
-                    width={400}
-                    height={250}
-                    style={{ width: "100%", height: 200, objectFit: "cover" }}
+                    className="rounded-full h-10 w-10"
                   />
                 )}
 
-                <CardContent>
-                  <Typography variant="h6" fontWeight={600}>
-                    {cat.name}
-                  </Typography>
-
-                  {cat.description && (
-                    <Typography variant="body2" color="text.secondary">
-                      {cat.description}
-                    </Typography>
-                  )}
-                </CardContent>
-              </CardActionArea>
-
+               <span className={`whitespace-nowrap text-[15px] ${!cat.image && 'pr-3'}`}>{cat.name}</span>
+              
               {/* Action buttons */}
-              <Box
-                sx={{
-                  position: "absolute",
-                  top: 8,
-                  right: 8,
-                  display: "flex",
-                  gap: 1,
-                }}
-              >
+                  <div className="absolute left-3">
                 {onEdit && (
-                  <IconButton size="small" color="primary" onClick={() => onEdit(cat.id)}>
+                  <button className="text-[#444] cursor-pointer" onClick={() => onEdit(cat.id)}>
                     <EditIcon />
-                  </IconButton>
+                  </button>
                 )}
 
                 {onDelete && (
-                  <IconButton size="small" color="error" onClick={() => onDelete(cat.id)}>
+                  <button className="text-[#f34747] cursor-pointer" onClick={() => onDelete(cat.id)}>
                     <DeleteIcon />
-                  </IconButton>
+                  </button>
                 )}
-              </Box>
-            </Card>
-          </Grid>
+              </div>
+           </motion.div>
         ))}
-      </Grid>
-    </Box>
+      </div>
   );
 }

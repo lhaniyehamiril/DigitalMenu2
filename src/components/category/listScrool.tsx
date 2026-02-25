@@ -1,5 +1,7 @@
 import { ListCategoriesByMenuIdResponse } from "@/packages/package-core/application/dtos";
 import { useState } from "react";
+import { motion } from 'motion/react'
+import { variantXRight, variantY } from "../style";
 
 export interface IListCategoryScroolX {
     initial: ListCategoriesByMenuIdResponse,
@@ -19,33 +21,30 @@ export function ListCategoryScroolX({
     }
 
     return (
-       <section className="
-  sticky top-0 z-10
-  bg-white
-  overflow-x-auto
-">
-  <div className="flex flex-nowrap gap-x-2 p-2">
+   <section className="sticky top-0 z-10 mt-5 bg-white pl-7 rounded-full overflow-x-auto scroll-hidden">
+    <motion.div
+      variants={variantY}
+      initial='hidden'
+      animate='visible'
+    className="flex flex-nowrap gap-x-2 p-2">
     {initial.map(c => (
       <div
         key={c.id}
         onClick={() => selectedItem(c.id)}
-        className={`
-          shrink-0
-          flex items-center gap-x-2
-          w-[160px]
-          border-b p-2
-          ${selectedItemId === c.id ? 'bg-gray-100 border-gray-800' : 'border-gray-300'}
-        `}
+        className={`rounded-full shrink-0
+          flex items-center gap-2 py-0.5 pr-1 pl-5
+            ${selectedItemId === c.id ? 'bg-[#dddddd]' : 'bg-[#eee]'}
+          `}
       >
         <img
-          src={c.image}
-          className="w-10 h-10 rounded-full"
+          src="/images/imageRes.webp"
+          className="w-9 h-9 rounded-full"
           alt={c.name}
         />
         <p className="whitespace-nowrap text-sm">{c.name}</p>
       </div>
     ))}
-  </div>
+  </motion.div>
 </section>
 
     )
